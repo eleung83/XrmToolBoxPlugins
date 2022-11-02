@@ -19,7 +19,7 @@ namespace BDK.XrmToolBox.RecycleBin {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class FetchXml {
@@ -61,20 +61,25 @@ namespace BDK.XrmToolBox.RecycleBin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;fetch&gt;
-        ///  &lt;entity name=&quot;audit&quot; &gt;
-        ///    &lt;attribute name=&quot;objecttypecodename&quot; /&gt;
-        ///    &lt;attribute name=&quot;regardingobjectid&quot; /&gt;
-        ///    &lt;attribute name=&quot;regardingobjectidname&quot; /&gt;
-        ///    &lt;attribute name=&quot;createdon&quot; /&gt;
-        ///    &lt;attribute name=&quot;userid&quot; /&gt;
-        ///    &lt;attribute name=&quot;objectid&quot; /&gt;
-        ///    &lt;attribute name=&quot;auditid&quot; /&gt;
-        ///    &lt;filter type=&quot;and&quot; &gt;
-        ///      &lt;condition attribute=&quot;operation&quot; operator=&quot;eq&quot; value=&quot;3&quot; /&gt;
-        ///      &lt;condition attribute=&quot;createdon&quot; operator=&quot;between&quot; &gt;
-        ///        &lt;value&gt;{0}&lt;/value&gt;
-        ///        &lt;value&gt;{1}&lt;/ [rest of string was truncated]&quot;;.
+        ///     Looks up a localized string similar to 
+        ///     <fetch>
+        ///         <entity name="audit" >
+        ///             <attribute name="objecttypecodename" />
+        ///             <attribute name="regardingobjectid" />
+        ///             <attribute name="regardingobjectidname" />
+        ///             <attribute name="createdon" />
+        ///             <attribute name="userid" />
+        ///             <attribute name="objectid" />
+        ///             <attribute name="auditid" />
+        ///             <filter type="and" >
+        ///                 <condition attribute="operation" operator="eq" value="3" />
+	    ///                 <condition attribute="createdon" operator="on-or-after" value="{0}" />
+        ///                 <condition attribute="createdon" operator="on-or-before" value="{1}" />    
+        ///                 <condition attribute="objecttypecode" operator="eq" value="{2}" />
+        ///                 <condition attribute="userid" operator="eq" value="{3}" />
+        ///             </filter>
+        ///         </entity>
+        ///     </fetch>
         /// </summary>
         internal static string DeleteAuditLogsByUser {
             get {
@@ -83,21 +88,28 @@ namespace BDK.XrmToolBox.RecycleBin {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;fetch&gt;
-        ///  &lt;entity name=&quot;audit&quot; &gt;
-        ///    &lt;attribute name=&quot;objecttypecodename&quot; /&gt;
-        ///    &lt;attribute name=&quot;regardingobjectid&quot; /&gt;
-        ///    &lt;attribute name=&quot;regardingobjectidname&quot; /&gt;
-        ///    &lt;attribute name=&quot;createdon&quot; /&gt;
-        ///    &lt;attribute name=&quot;userid&quot; /&gt;
-        ///    &lt;attribute name=&quot;objectid&quot; /&gt;
-        ///    &lt;attribute name=&quot;auditid&quot; /&gt;
-        ///    &lt;attribute name=&quot;objecttypecode&quot; /&gt;
-        ///    &lt;attribute name=&quot;actionname&quot; /&gt;
-        ///    &lt;attribute name=&quot;action&quot; /&gt;
-        ///    &lt;attribute name=&quot;objectidname&quot; /&gt;
-        ///    &lt;filter type=&quot;and&quot; &gt;
-        ///      &lt;condition attribute [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 
+        ///   <fetch>
+        ///     <entity name="audit" >
+        ///         <attribute name="objecttypecodename" />
+        ///         <attribute name="regardingobjectid" />
+        ///         <attribute name="regardingobjectidname" />
+        ///         <attribute name="createdon" />
+        ///         <attribute name="userid" />
+        ///         <attribute name="objectid" />
+        ///         <attribute name="auditid" />
+        ///         <attribute name="objecttypecode" />
+        ///         <attribute name="actionname" />
+        ///         <attribute name="action" />
+        ///         <attribute name="objectidname" />
+        ///         <filter type="and" >
+        ///             <condition attribute="operation" operator="eq" value="3" />
+	    ///             <condition attribute="createdon" operator="on-or-after" value="{0}" />
+        ///             <condition attribute="createdon" operator="on-or-before" value="{1}" />      
+        ///             <condition attribute="objecttypecode" operator="eq" value="{2}" />
+        ///         </filter>
+        ///     </entity>
+        /// </fetch>
         /// </summary>
         internal static string DeletedAuditLogs {
             get {

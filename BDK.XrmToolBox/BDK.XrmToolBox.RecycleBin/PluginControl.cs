@@ -112,7 +112,7 @@ namespace BDK.XrmToolBox.RecycleBin
         public PluginControl()
         {
             InitializeComponent();
-            dateFrom.Value = DateTime.Now.AddMonths(-1);
+            dateFrom.Value = DateTime.Now.AddDays(-1);
             dateTo.Value = DateTime.Now;
             entityMetadataList = new List<EntityMetadata>();
         }
@@ -153,8 +153,8 @@ namespace BDK.XrmToolBox.RecycleBin
                             auditFetchXml = string.Format(ConnectionDetail.OrganizationMajorVersion < 8 ? 
                                 FetchXml.DeletedAuditLogs.Replace("regardingobject", "object") : 
                                 FetchXml.DeletedAuditLogs, 
-                                dateFrom.Value.ToString("yyyy-MM-dd"), 
-                                dateTo.Value.AddDays(1).ToString("yyyy-MM-dd"), 
+                                dateFrom.Value.ToString("yyyy-MM-dd hh:mm:ss"), 
+                                dateTo.Value.ToString("yyyy-MM-dd  hh:mm:ss"), 
                                 ddlEntities.SelectedValue);
                         }
                         else
@@ -162,8 +162,8 @@ namespace BDK.XrmToolBox.RecycleBin
                             auditFetchXml = string.Format(ConnectionDetail.OrganizationMajorVersion < 8 ?
                                 FetchXml.DeleteAuditLogsByUser.Replace("regardingobject", "object") :
                                 FetchXml.DeleteAuditLogsByUser, 
-                                dateFrom.Value.ToString("yyyy-MM-dd"),
-                                dateTo.Value.AddDays(1).ToString("yyyy-MM-dd"),
+                                dateFrom.Value.ToString("yyyy-MM-dd hh:mm:ss"),
+                                dateTo.Value.AddDays(1).ToString("yyyy-MM-dd hh:mm:ss"),
                                 ddlEntities.SelectedValue,
                                 selectedUser);
                         }
@@ -174,31 +174,26 @@ namespace BDK.XrmToolBox.RecycleBin
                             RetrieveAuditDetailsRequest auditDetailRequest = new RetrieveAuditDetailsRequest();
                             auditDetailRequest.AuditId = item.Id;
                             RetrieveAuditDetailsResponse response = (RetrieveAuditDetailsResponse)Service.Execute(auditDetailRequest);
-
-                            var detailType = response.AuditDetail.GetType();
-                            if (detailType == typeof(AttributeAuditDetail))
+                            if (!(response.AuditDetail is AttributeAuditDetail)) continue;
+                            AttributeAuditDetail attributeDetail = (AttributeAuditDetail)response.AuditDetail;
+                            EntityMetadata metadata = entityMetadataList.FirstOrDefault(x => (x.ObjectTypeCode == selectedEntity.Item1));
+                            AuditItem auditItem = new Model.AuditItem()
                             {
-                                AttributeAuditDetail attributeDetail = (AttributeAuditDetail)response.AuditDetail;
-                                EntityMetadata metadata = entityMetadataList.FirstOrDefault(x => (x.ObjectTypeCode == selectedEntity.Item1));
-                                AuditItem auditItem = new Model.AuditItem()
-                                {
-                                    AuditId = item.Id,
-                                    DeletedBy = ((EntityReference)item["userid"]).Name,
-                                    DeletionDate = (DateTime)item["createdon"],
-                                    Entity = ((EntityReference)item["objectid"]).LogicalName,
-                                    RecordId = ((EntityReference)item["objectid"]).Id,
-                                    AuditDetail = attributeDetail,
-                                    Metadata = metadata
-                                };
+                                AuditId = item.Id,
+                                DeletedBy = ((EntityReference)item["userid"]).Name,
+                                DeletionDate = (DateTime)item["createdon"],
+                                Entity = ((EntityReference)item["objectid"]).LogicalName,
+                                RecordId = ((EntityReference)item["objectid"]).Id,
+                                AuditDetail = attributeDetail,
+                                Metadata = metadata
+                            };
 
-                                if (selectedEntity.Item3 != null && attributeDetail.OldValue.Contains(selectedEntity.Item3))
-                                {
-                                    auditItem.Name = attributeDetail.OldValue[selectedEntity.Item3].ToString();
-                                }
-
-                                data.Add(auditItem);
-
+                            if (selectedEntity.Item3!=null && attributeDetail.OldValue.Contains(selectedEntity.Item3))
+                            {
+                                auditItem.Name = attributeDetail.OldValue[selectedEntity.Item3].ToString();
                             }
+
+                            data.Add(auditItem);
                         }
 
                         ev.Result = data.OrderByDescending(x => x.DeletionDate).ToList();
@@ -315,7 +310,7 @@ namespace BDK.XrmToolBox.RecycleBin
                     List<KeyValuePair<Guid, string>> users = new List<KeyValuePair<Guid, string>>();
 
                     FetchExpression query = new FetchExpression(FetchXml.LicencedUsers);
-                    var queryResult = Service.RetrieveMultiple(query);
+                    var queryResult = Service.RetrieveMultiple(query);                    
                     users.Add(new KeyValuePair<Guid, string>(Guid.Empty, "All Users"));
                     foreach (var item in queryResult.Entities)
                     {
@@ -396,8 +391,9 @@ namespace BDK.XrmToolBox.RecycleBin
                                     recordsSelected = true;
                                     AuditItem audit = (AuditItem)row.DataBoundItem;
                                     Entity entity = audit.AuditDetail.OldValue;
+                                    entity.Id = audit.RecordId;
                                     entity.Attributes.Remove("statecode");
-                                    entity.Attributes.Remove("statuscode");
+                                    entity.Attributes.Remove("statuscode");                                    
                                     Service.Create(entity);
                                 }
                             }
@@ -501,6 +497,10 @@ namespace BDK.XrmToolBox.RecycleBin
                 else if (input.GetType() == typeof(OptionSetValue))
                 {
                     result = ((OptionSetValue)input).Value;
+                }
+                else if (input.GetType() == typeof(Money))
+                {
+                    result = ((Money)input).Value;
                 }
             }
 

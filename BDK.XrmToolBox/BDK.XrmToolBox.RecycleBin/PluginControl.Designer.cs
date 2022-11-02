@@ -1,4 +1,6 @@
-﻿namespace BDK.XrmToolBox.RecycleBin
+﻿using System.Windows.Forms;
+
+namespace BDK.XrmToolBox.RecycleBin
 {
     partial class PluginControl
     {
@@ -39,6 +41,7 @@
             this.dateTo = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.btnShowRecords = new System.Windows.Forms.Button();
             this.GridDeletedRecords = new System.Windows.Forms.DataGridView();
             this.Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -46,6 +49,7 @@
             this.entityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.deletionDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.deletedByDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.recordIdDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.auditItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label4 = new System.Windows.Forms.Label();
             this.ddlUsers = new System.Windows.Forms.ComboBox();
@@ -133,29 +137,44 @@
             this.ddlEntities.Name = "ddlEntities";
             this.ddlEntities.Size = new System.Drawing.Size(185, 21);
             this.ddlEntities.TabIndex = 2;
+
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(4, 24);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(26, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "From: ";
+
             // 
             // dateFrom
             // 
-            this.dateFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateFrom.Location = new System.Drawing.Point(4, 23);
+            this.dateFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;            
+            this.dateFrom.CustomFormat = "MM/dd/yyyy HH:mm:ss";
+            this.dateFrom.ShowUpDown = true;
+            this.dateFrom.Location = new System.Drawing.Point(41, 23);
             this.dateFrom.Name = "dateFrom";
-            this.dateFrom.Size = new System.Drawing.Size(93, 20);
+            this.dateFrom.Size = new System.Drawing.Size(153, 13);
             this.dateFrom.TabIndex = 3;
             // 
             // dateTo
             // 
-            this.dateTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTo.Location = new System.Drawing.Point(156, 23);
+            this.dateTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTo.CustomFormat = "MM/dd/yyyy HH:mm:ss";
+            this.dateTo.Location = new System.Drawing.Point(257, 23);
+            this.dateTo.ShowUpDown = true;
             this.dateTo.Name = "dateTo";
-            this.dateTo.Size = new System.Drawing.Size(93, 20);
+            this.dateTo.Size = new System.Drawing.Size(153, 13);
             this.dateTo.TabIndex = 5;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(116, 24);
+            this.label2.Location = new System.Drawing.Point(230, 24);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(16, 13);
+            this.label2.Size = new System.Drawing.Size(20, 13);
             this.label2.TabIndex = 6;
             this.label2.Text = "to";
             // 
@@ -191,7 +210,8 @@
             this.nameDataGridViewTextBoxColumn,
             this.entityDataGridViewTextBoxColumn,
             this.deletionDateDataGridViewTextBoxColumn,
-            this.deletedByDataGridViewTextBoxColumn});
+            this.deletedByDataGridViewTextBoxColumn,
+            this.recordIdDataGridViewTextBoxColumn});
             this.GridDeletedRecords.DataSource = this.auditItemBindingSource;
             this.GridDeletedRecords.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GridDeletedRecords.Location = new System.Drawing.Point(0, 0);
@@ -234,6 +254,7 @@
             this.deletionDateDataGridViewTextBoxColumn.HeaderText = "Deleted Date";
             this.deletionDateDataGridViewTextBoxColumn.Name = "deletionDateDataGridViewTextBoxColumn";
             this.deletionDateDataGridViewTextBoxColumn.ReadOnly = true;
+            this.deletionDateDataGridViewTextBoxColumn.SortMode = DataGridViewColumnSortMode.Automatic;
             // 
             // deletedByDataGridViewTextBoxColumn
             // 
@@ -242,6 +263,16 @@
             this.deletedByDataGridViewTextBoxColumn.HeaderText = "Deleted By";
             this.deletedByDataGridViewTextBoxColumn.Name = "deletedByDataGridViewTextBoxColumn";
             this.deletedByDataGridViewTextBoxColumn.ReadOnly = true;
+            this.deletedByDataGridViewTextBoxColumn.SortMode = DataGridViewColumnSortMode.Automatic;
+            // 
+            // recordIdDataGridViewTextBoxColumn
+            // 
+            this.recordIdDataGridViewTextBoxColumn.DataPropertyName = "RecordId";
+            this.recordIdDataGridViewTextBoxColumn.FillWeight = 89.94477F;
+            this.recordIdDataGridViewTextBoxColumn.HeaderText = "Record Id";
+            this.recordIdDataGridViewTextBoxColumn.Name = "recordIdDataGridViewTextBoxColumn";
+            this.recordIdDataGridViewTextBoxColumn.ReadOnly = true;
+            this.recordIdDataGridViewTextBoxColumn.SortMode = DataGridViewColumnSortMode.Automatic;
             // 
             // auditItemBindingSource
             // 
@@ -288,6 +319,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.dateFrom);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.btnShowRecords);
@@ -299,7 +331,7 @@
             this.groupBox2.Size = new System.Drawing.Size(672, 91);
             this.groupBox2.TabIndex = 13;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Date Range";
+            this.groupBox2.Text = "Audit Log Created Date Range";
             // 
             // groupBox1
             // 
@@ -415,6 +447,7 @@
         private System.Windows.Forms.DateTimePicker dateTo;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnShowRecords;
         private System.Windows.Forms.DataGridView GridDeletedRecords;
         private System.Windows.Forms.BindingSource auditItemBindingSource;
@@ -426,6 +459,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn entityDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn deletionDateDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn deletedByDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn recordIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;

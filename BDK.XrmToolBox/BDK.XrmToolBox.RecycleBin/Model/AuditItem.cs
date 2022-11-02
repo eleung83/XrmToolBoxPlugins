@@ -87,7 +87,7 @@ namespace BDK.XrmToolBox.RecycleBin.Model
         /// <value>
         /// The deleted by.
         /// </value>
-        public string DeletedBy { get; set; }
+        public string DeletedBy { get; set; }        
 
         /// <summary>
         /// Gets or sets the audit detail.
